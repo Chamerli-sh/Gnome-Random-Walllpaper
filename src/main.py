@@ -1,6 +1,7 @@
 import os
 import random
 import getpass
+import time
 
 user_name = getpass.getuser()
 image_format = ["png", "jpg", "jpeg"]
@@ -11,7 +12,7 @@ path = "/Pictures"
 true_path = random.choice(os.listdir("/home/"+ user_name + path))
 
 def change_wallpaper(new_path):
-    os.system("gsettings set org.gnome.desktop.background picture-uri file:/home/"+ user_name + path + "/" + true_path)
+    os.system("gsettings set org.gnome.desktop.background picture-uri file:" + new_path)
 
 def get_file_path():
     true_path = random.choice(os.listdir("/home/"+ user_name + path))
@@ -27,10 +28,16 @@ def valid_image_check(ver_path):
         print(ver_path)
         return False
 
-print(true_path)
-
-
-if valid_image_check(get_file_path()) == True:
-    change_wallpaper(get_file_path())
-else:
-    change_wallpaper(get_file_path())
+def contdown(t):
+    while t > 0:
+        print(t)
+        t -= 1
+        time.sleep(1)
+    
+    if t <= 0:
+        get_file_path()
+        true_path = random.choice(os.listdir("/home/"+ user_name + path))
+        change_wallpaper("/home/"+ user_name + path + "/" + true_path)
+        print("Current wallpaper: " + true_path)
+while True:
+    contdown(10)
